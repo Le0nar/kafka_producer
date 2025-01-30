@@ -1,9 +1,10 @@
 package service
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
-	"log"
+	"fmt"
 	"time"
 
 	"github.com/Le0nar/kafka_producer/internal/order"
@@ -68,27 +69,28 @@ func (s *Service) UpdateOrderStatus(id uuid.UUID, status string) error {
 }
 
 func sendToKafka(order order.Order) error {
-	// Создаем подключение к Kafka
+	// Создаем Kafka writer
 	writer := kafka.NewWriter(kafka.WriterConfig{
 		Brokers: []string{"localhost:9092"},
 		Topic:   "orders",
 	})
 
-	// Сериализация заказа в JSON
-	orderJSON, err := json.Marshal(order)
+	// Преобразуем структуру в JSON
+	orderBytes, err := json.Marshal(order)
 	if err != nil {
 		return err
 	}
 
 	// Отправляем сообщение в Kafka
-	err = writer.WriteMessages(nil, kafka.Message{
-		Value: orderJSON,
-	})
+	err = writer.WriteMessages(context.Background(),
+		kafka.Message{
+			Value: orderBytes,
+		},
+	)
 	if err != nil {
 		return err
 	}
-
-	log.Printf("Order sent to Kafka: %v", order)
+	fmt.Println("Order sent to Kafka:", order)
 
 	return nil
 }
