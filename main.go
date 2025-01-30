@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/Le0nar/kafka_orders/internal/handler"
-	"github.com/Le0nar/kafka_orders/internal/service"
+	"github.com/Le0nar/kafka_producer/internal/handler"
+	"github.com/Le0nar/kafka_producer/internal/service"
 )
 
 func main() {

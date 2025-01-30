@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/Le0nar/kafka_orders/internal/order"
+	"github.com/Le0nar/kafka_producer/internal/order"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
